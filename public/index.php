@@ -1,14 +1,13 @@
 <?php
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
+session_start();
 
 require '../vendor/autoload.php';
+require '../src/settings.php';
 
-$app = new \Slim\App;
-$app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
-    $name = $args['name'];
-    $response->getBody()->write("Hello, $name");
+$app = new \Slim\App(['settings' => $config]);
 
-    return $response;
-});
+require '../src/dependencies.php';
+require '../src/middleware.php';
+require '../src/routes.php';
+
 $app->run();
