@@ -9,3 +9,12 @@ $config['renderer'] = [
     'debug' => true,
     'auto_reload' => true
 ];
+
+$config['db'] = [
+    'database_type' => 'mysql',
+    'database_name' => 'investment',
+    'server' => 'localhost',
+    'username' => 'root',
+    'password' => 'root',
+    'charset' => 'utf8'
+];

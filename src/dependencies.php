@@ -19,3 +19,9 @@ $container['view'] = function ($c) {
 
     return $view;
 };
+
+$container['db'] = function ($c){
+    $settings = $c->get('settings')['db'];
+    $database = new PDO("mysql:host=${settings['server']};dbname=${settings['database_name']}", $settings["username"], $settings["password"]);
+    return $database;
+};
