@@ -15,6 +15,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
         <!-- CSS Files -->
         <link href="../assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet"/>
+        {% block style %}{% endblock %}
     </head>
 
     <body class="">
@@ -32,12 +33,32 @@
                 </div>
                 <div class="sidebar-wrapper">
                     <ul class="nav">
-                        <li class="nav-item active  ">
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ path_for('home') }}">
                                 <i class="material-icons">home</i>
                                 <p>Home</p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a aria-expanded="false" class="nav-link collapsed" data-toggle="collapse" href="#graficoSubMenu">                                
+                                <i class="material-icons">bar_chart</i>
+                                <p>Gráficos
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <div class="collapse" id="graficoSubMenu" style="">
+                                <ul class="nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ path_for('chart.allocation.type') }}">
+                                            <i class="material-icons">menu</i>
+                                            <span class="sidebar-normal">Alocação/Tipo</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -102,6 +123,7 @@
         <script src="../assets/js/plugins/bootstrap-notify.js"></script>
         <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
         <script src="../assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
+        {% block script %}{% endblock %}
     </body>
 
 </html>

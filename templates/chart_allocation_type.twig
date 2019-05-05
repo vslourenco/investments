@@ -1,0 +1,40 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}
+    Gráfico - Alocação/Tipo
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-6">
+        <div class="card card-chart">
+            <div class="card-header card-header-primary">
+                Alocação por Tipo de Produto
+            </div>
+            <div class="card-body">
+               <div class="ct-chart ct-allocation"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+var data = {
+  labels: ['{{ chart_label|join("', '")|raw }}'],
+  series: [{{ chart_serie|join(', ') }}]
+};
+
+var options = { 
+    width: '100%',  
+    height: '100%',
+    chartPadding: 5,
+    labelOffset: 60,
+  labelPosition: 'center',
+  reverseData: true,
+  labelDirection: 'explode',
+};
+
+new Chartist.Pie('.ct-allocation', data, options);
+</script>
+{% endblock %}
