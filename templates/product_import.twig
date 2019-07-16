@@ -1,0 +1,32 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}
+    Importar Produtos
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-warning">
+                <h4 class="card-title">Importar Produtos</h4>
+                <p class="card-category">Importe sua carteira de produtos</p>
+            </div>
+            <div class="card-body">
+                <form enctype='multipart/form-data' method="POST">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="btn btn-info btn-sm">
+                                <span>Selecione o arquivo:</span>
+                                <input type="file">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-success pull-right" type="submit">Enviar Arquivo</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
