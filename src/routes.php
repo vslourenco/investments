@@ -16,7 +16,9 @@ $app->get('/', function($request, $response){
 
 $app->get('/chart/allocation-type', ChartController::class.':allocationType')->setName('chart.allocation.type');
 
-$app->get('/product/import',ProductController::class.':importProducts')->setName('product.import');
+$app->get('/products/import/form',ProductController::class.':importForm')->setName('products.import_form');
+
+$app->post('/products/import/list',ProductController::class.':importList')->setName('products.import_list');
 
 $app->get('/hello/{name}', function (Request $request, Response $response, array $args) {
     $name = $args['name'];
