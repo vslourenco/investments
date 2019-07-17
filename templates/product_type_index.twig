@@ -1,0 +1,56 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}
+    Tipos de Produto: Lista
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Tipos de Produto</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="{{ path_for('product_types.create') }}">
+                            <button class="btn btn-success">
+                                <i class="material-icons">add</i>
+                                Adicionar Tipo
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <tr>
+                                <th>
+                                    Nome
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product_type in product_types %}
+                                <tr>
+                                    <td>{{ product_type.name }}</td>
+                                    <td class="text-right">
+                                        <a href="{{ path_for('product_types.edit', {'id': product_type.id}) }}">
+                                            <button class="btn btn-warning btn-link btn-lg" data-original-title="Editar" rel="tooltip" title="" type="button">
+                                                <i class="material-icons">create</i>
+                                            </button>
+                                        </a>
+                                        <button class="btn btn-danger btn-link btn-lg" data-original-title="Excluir" rel="tooltip" title="" type="button">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
