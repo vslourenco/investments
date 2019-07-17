@@ -12,133 +12,149 @@
         content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport'/>
         <!--     Fonts and icons     -->
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" rel="stylesheet" type="text/css"/>
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+        <link
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
         <!-- CSS Files -->
-        <link href="/assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet"/>
-        {% block style %}{% endblock %}
-    </head>
+        <link href="/assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet"/> {% block style %}{% endblock %}
+        </head>
 
-    <body class="">
-        <div class="wrapper ">
-            <div
-                class="sidebar" data-background-color="white" data-color="green" data-image="/assets/img/sidebar-1.jpg">
-                <!--
-                    Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
-                    Tip 2: you can also add an image using data-image tag
-                -->
-                <div class="logo">
-                    <a class="simple-text logo-normal" href="http://www.creative-tim.com">
-                        Creative Tim
-                    </a>
+        <body class="">
+            <div class="wrapper ">
+                <div class="sidebar" data-background-color="white" data-color="green" data-image="/assets/img/sidebar-1.jpg">
+                    <!--
+                                        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+                                        Tip 2: you can also add an image using data-image tag
+                                    -->
+                    <div class="logo">
+                        <a class="simple-text logo-normal" href="http://www.creative-tim.com">
+                            Creative Tim
+                        </a>
+                    </div>
+                    <div class="sidebar-wrapper">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path_for('home') }}">
+                                    <i class="material-icons">home</i>
+                                    <p>Home</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a aria-expanded="false" class="nav-link collapsed" data-toggle="collapse" href="#graficoSubMenu">
+                                    <i class="material-icons">bar_chart</i>
+                                    <p>Gráficos
+                                        <b class="caret"></b>
+                                    </p>
+                                </a>
+                                <div class="collapse" id="graficoSubMenu" style="">
+                                    <ul class="nav">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path_for('chart.allocation.type') }}">
+                                                <i class="material-icons">menu</i>
+                                                <span class="sidebar-normal">Alocação/Tipo</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path_for('products.import_form') }}">
+                                    <i class="material-icons">cloud_upload</i>
+                                    <p>Importar Produtos</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path_for('product_types.index') }}">
+                                    <i class="material-icons">business_center</i>
+                                    <p>Tipos de Produto</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
                 </div>
-                <div class="sidebar-wrapper">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path_for('home') }}">
-                                <i class="material-icons">home</i>
-                                <p>Home</p>
-                            </a>
-                        </li>
+                <div class="main-panel">
 
-                        <li class="nav-item">
-                            <a aria-expanded="false" class="nav-link collapsed" data-toggle="collapse" href="#graficoSubMenu">                                
-                                <i class="material-icons">bar_chart</i>
-                                <p>Gráficos
-                                    <b class="caret"></b>
-                                </p>
-                            </a>
-                            <div class="collapse" id="graficoSubMenu" style="">
-                                <ul class="nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{ path_for('chart.allocation.type') }}">
-                                            <i class="material-icons">menu</i>
-                                            <span class="sidebar-normal">Alocação/Tipo</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                    <div class="content">
+                        <div class="container-fluid"> {% block content %}{% endblock %}
                             </div>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path_for('products.import_form') }}">
-                                <i class="material-icons">cloud_upload</i>
-                                <p>Importar Produtos</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path_for('product_types.index') }}">
-                                <i class="material-icons">business_center</i>
-                                <p>Tipos de Produto</p>
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-            <div class="main-panel">
-
-                <div class="content">
-                    <div class="container-fluid">
-                        {% block content %}{% endblock %}
-                    </div>
-                </div>
-
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="copyright float-right">
-                            &copy;
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>, 
-                            <a href="https://demos.creative-tim.com/material-dashboard/examples/dashboard.html" target="_blank">template</a> made by
-                            <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>
                         </div>
+
+                        <footer class="footer">
+                            <div class="container-fluid">
+                                <div class="copyright float-right">
+                                    &copy;
+                                    <script>
+                                        document.write(new Date().getFullYear())
+                                    </script>,
+                                    <a href="https://demos.creative-tim.com/material-dashboard/examples/dashboard.html" target="_blank">template</a>
+                                    made by
+                                    <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>
+                                </div>
+                            </div>
+                        </footer>
+
                     </div>
-                </footer>
+                </div>
+                <!--   Core JS Files   -->
+                <script src="/assets/js/core/jquery.min.js"></script>
+                <script src="/assets/js/core/popper.min.js"></script>
+                <script src="/assets/js/core/bootstrap-material-design.min.js"></script>
+                <script src="/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+                <!-- Plugin for the momentJs  -->
+                <script src="/assets/js/plugins/moment.min.js"></script>
+                <!--  Plugin for Sweet Alert -->
+                <script src="/assets/js/plugins/sweetalert2.js"></script>
+                <!-- Forms Validations Plugin -->
+                <script src="/assets/js/plugins/jquery.validate.min.js"></script>
+                <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
+                <script src="/assets/js/plugins/jquery.bootstrap-wizard.js"></script>
+                <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+                <script src="/assets/js/plugins/bootstrap-selectpicker.js"></script>
+                <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
+                <script src="/assets/js/plugins/bootstrap-datetimepicker.min.js"></script>
+                <!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
+                <script src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+                <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+                <script src="/assets/js/plugins/bootstrap-tagsinput.js"></script>
+                <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+                <script src="/assets/js/plugins/jasny-bootstrap.min.js"></script>
+                <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
+                <script src="/assets/js/plugins/fullcalendar.min.js"></script>
+                <!-- Vector Map plugin, full documentation here: http://jvectormap.com/documentation/ -->
+                <script src="/assets/js/plugins/jquery-jvectormap.js"></script>
+                <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+                <script src="/assets/js/plugins/nouislider.min.js"></script>
+                <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+                <!-- Library for adding dinamically elements -->
+                <script src="/assets/js/plugins/arrive.min.js"></script>
+                <!-- Chartist JS -->
+                <script src="/assets/js/plugins/chartist.min.js"></script>
+                <!--  Notifications Plugin    -->
+                <script src="/assets/js/plugins/bootstrap-notify.js"></script>
+                <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+                <script src="/assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
+                {% block script %}{% endblock %}
+                <script type="text/javascript">
+                    function validateDelete(route) {
+                        Swal.fire({
+                            title: 'Deseja excluir o registro?',
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Sim, delete',
+                            cancelButtonText: 'Cancelar'
+                        }).then((result) => {
+                            if (result.value) {
+                                window.location= route;
+                            }
+                        })
+                    }
+                </script>
+            </body>
 
-            </div>
-        </div>
-        <!--   Core JS Files   -->
-        <script src="/assets/js/core/jquery.min.js"></script>
-        <script src="/assets/js/core/popper.min.js"></script>
-        <script src="/assets/js/core/bootstrap-material-design.min.js"></script>
-        <script src="/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-        <!-- Plugin for the momentJs  -->
-        <script src="/assets/js/plugins/moment.min.js"></script>
-        <!--  Plugin for Sweet Alert -->
-        <script src="/assets/js/plugins/sweetalert2.js"></script>
-        <!-- Forms Validations Plugin -->
-        <script src="/assets/js/plugins/jquery.validate.min.js"></script>
-        <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
-        <script src="/assets/js/plugins/jquery.bootstrap-wizard.js"></script>
-        <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
-        <script src="/assets/js/plugins/bootstrap-selectpicker.js"></script>
-        <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
-        <script src="/assets/js/plugins/bootstrap-datetimepicker.min.js"></script>
-        <!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
-        <script src="/assets/js/plugins/jquery.dataTables.min.js"></script>
-        <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
-        <script src="/assets/js/plugins/bootstrap-tagsinput.js"></script>
-        <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
-        <script src="/assets/js/plugins/jasny-bootstrap.min.js"></script>
-        <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
-        <script src="/assets/js/plugins/fullcalendar.min.js"></script>
-        <!-- Vector Map plugin, full documentation here: http://jvectormap.com/documentation/ -->
-        <script src="/assets/js/plugins/jquery-jvectormap.js"></script>
-        <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-        <script src="/assets/js/plugins/nouislider.min.js"></script>
-        <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
-        <!-- Library for adding dinamically elements -->
-        <script src="/assets/js/plugins/arrive.min.js"></script>
-        <!-- Chartist JS -->
-        <script src="/assets/js/plugins/chartist.min.js"></script>
-        <!--  Notifications Plugin    -->
-        <script src="/assets/js/plugins/bootstrap-notify.js"></script>
-        <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-        <script src="/assets/js/material-dashboard.js?v=2.1.1" type="text/javascript"></script>
-        {% block script %}{% endblock %}
-    </body>
-
-</html>
+        </html>

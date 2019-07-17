@@ -31,11 +31,22 @@ class ProductTypeController extends Controller
     }
 
     public function update($request, $response){        
-        $params = $request->getParams();
+        $params = $request->getParams();  
+        $product_type = $this->c->db->prepare("UPDATE product_type SET name=:name WHERE id=:id");
+        $product_type->execute(array(
+            ':name' => $params['name'],
+            ':id' => $params['id']
+          ));
         return $response->withRedirect($this->c->get('router')->pathFor('product_types.index'));              
     }
 
-    public function delete($request, $response){
+    public function delete($request, $response, $args){   
+        $id = isset($args["id"]) ? $args["id"] : "";
+        $product_type = $this->c->db->prepare("UPDATE product_type SET deleted_at=:date WHERE id=:id");
+        $product_type->execute(array(
+            ':date' => date("Y-m-d H:i"),
+            ':id' => $id
+          ));
         return $response->withRedirect($this->c->get('router')->pathFor('product_types.index'));              
     }
 }

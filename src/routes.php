@@ -21,6 +21,6 @@ $app->get('/productTypes/create',ProductTypeController::class.':create')->setNam
 $app->post('/productTypes/store',ProductTypeController::class.':store')->setName('product_types.store');
 $app->get('/productTypes/{id}/edit',ProductTypeController::class.':edit')->setName('product_types.edit');
 $app->post('/productTypes/update',ProductTypeController::class.':update')->setName('product_types.update');
-$app->post('/productTypes/{id}/delete',ProductTypeController::class.':delete')->setName('product_types.delete');
+$app->get('/productTypes/{id}/delete',ProductTypeController::class.':delete')->setName('product_types.delete');
 
 

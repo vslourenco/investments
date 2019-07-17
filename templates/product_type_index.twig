@@ -41,7 +41,7 @@
                                                 <i class="material-icons">create</i>
                                             </button>
                                         </a>
-                                        <button class="btn btn-danger btn-link btn-lg" data-original-title="Excluir" rel="tooltip" title="" type="button">
+                                        <button class="btn btn-danger btn-link btn-lg" data-original-title="Excluir" rel="tooltip" title="" type="button" onclick="validateDelete('{{ path_for('product_types.delete', {'id': product_type.id}) }}')">
                                             <i class="material-icons">delete</i>
                                         </button>
                                     </td>
