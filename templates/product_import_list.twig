@@ -1,0 +1,64 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}
+    Produtos Importados: Lista
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <form method="POST" action="{{ path_for('products.import') }}">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Produtos Importados</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                                <tr>
+                                    <th>
+                                        Nome
+                                    </th>
+                                    <th>
+                                        Tipo
+                                    </th>
+                                    <th>
+                                        Valor
+                                    </th>
+                                    <th>
+                                        Produto
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in products %}
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="product_name[]" value="{{ product.name }}">
+                                            {{ product.name }}
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="product_type[]">
+                                                <option value=""></option>
+                                                {% for product_type in product_types %}
+                                                    <option value="{{ product_type.id }}" {{ product_type.id==product.type ? "selected" : "" }}>{{ product_type.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="product_value[]" value="{{ product.value }}">
+                                            {{ product.value }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-success pull-right" type="submit">Salvar</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
