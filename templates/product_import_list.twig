@@ -49,6 +49,14 @@
                                             <input type="hidden" name="product_value[]" value="{{ product.value }}">
                                             {{ product.value }}
                                         </td>
+                                        <td>
+                                            <select class="form-control" name="stored_product_id[]">
+                                                <option value=""></option>
+                                                {% for stored_product in stored_products %}
+                                                    <option value="{{ stored_product.id }}" {{ stored_product.id==product.product_id ? "selected" : "" }}>{{ stored_product.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

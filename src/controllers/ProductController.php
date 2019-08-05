@@ -11,6 +11,9 @@ class ProductController extends Controller
     public function importList($request, $response){ 
         
         $product_types = $this->c->db->query("SELECT * FROM product_type WHERE deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
+        $stored_products = $this->c->db->query("SELECT * FROM product WHERE deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
+
+        $products_by_name = array_column($stored_products, NULL, "name");
 
         $params = $request->getParams();
         $uploadedFiles = $request->getUploadedFiles();
@@ -23,11 +26,15 @@ class ProductController extends Controller
         $last_column = $worksheet->getHighestDataColumn();
         $last_row = $worksheet->getHighestDataRow();
        
+        
         //var_dump($uploadedFiles["document"]->file);           
         //echo "<pre>";
         //var_dump($spreadsheet);
         //var_dump($last_column);
         //var_dump($last_row);
+        //var_dump($products_by_name);
+        //var_dump($products);
+        //die();
 
         $products = array();
         for($i=2; $i<=$last_row; $i++){
@@ -59,16 +66,18 @@ class ProductController extends Controller
                 default:
                     $type= 0;
                     break;
-            }
+            }           
+            $product_name = $worksheet->getCell("A".$i)->getValue();
             $products[] = array(
-                'name' => $worksheet->getCell("A".$i), 
+                'name' => $product_name, 
                 'type' => $type, 
-                'value' => $worksheet->getCell("E".$i), 
+                'value' => $worksheet->getCell("E".$i)->getValue(), 
+                'product_id' => isset($products_by_name[$product_name]) ? $products_by_name[$product_name]->id : 0, 
             );
             //echo "Produto: ".$worksheet->getCell("A".$i)." | Classe: ".$worksheet->getCell("B".$i)." | Valor Aplicado: ".$worksheet->getCell("E".$i)."<br/>";    
         }
-        
-        return $this->c->view->render($response, 'product_import_list.twig', compact('products', 'product_types'));     
+
+        return $this->c->view->render($response, 'product_import_list.twig', compact('products', 'product_types', 'stored_products'));     
     }
 
     public function import($request, $response){         
