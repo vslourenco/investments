@@ -85,14 +85,25 @@ class ProductController extends Controller
         $product_name = $params['product_name'];
         $product_type = $params['product_type'];
         $product_value = $params['product_value'];
+        $stored_product_id = $params['stored_product_id'];
         
         for($i=0; $i<count($product_name); $i++){
-            $product = $this->c->db->prepare("INSERT INTO product (name, product_type_id, value, created_at) VALUES (:name, :type, :value, NOW())");
-            $product->execute(array(
-                ':name' => $product_name[$i],
-                ':type' => $product_type[$i],
-                ':value' => str_replace(",", ".",str_replace(".", "",$product_value[$i]))
-            ));
+            if($stored_product_id[$i]>0){
+                $product = $this->c->db->prepare("UPDATE product SET name=:name, product_type_id=:type, value=:value WHERE id=:product_id");
+                $product->execute(array(
+                    ':name' => $product_name[$i],
+                    ':type' => $product_type[$i],
+                    ':value' => str_replace(",", ".",str_replace(".", "",$product_value[$i])),
+                    ':product_id' => $stored_product_id[$i]
+                ));
+            }else{
+                $product = $this->c->db->prepare("INSERT INTO product (name, product_type_id, value, created_at) VALUES (:name, :type, :value, NOW())");
+                $product->execute(array(
+                    ':name' => $product_name[$i],
+                    ':type' => $product_type[$i],
+                    ':value' => str_replace(",", ".",str_replace(".", "",$product_value[$i]))
+                ));
+            }   
         }
         return $response->withRedirect($this->c->get('router')->pathFor('chart.allocation.type'));  
     }
