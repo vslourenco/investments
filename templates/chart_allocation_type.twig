@@ -31,7 +31,7 @@ var myPieChart = new Chart(allocation, {
     data: {
         labels: ['{{ chart_label|join("', '")|raw }}'],
         datasets: [{
-            backgroundColor: [{% for label in chart_label %}getRandomColor(),{% endfor %}],
+            backgroundColor: ['{{ chart_color|join("', '")|raw }}'],
             data: [{{ chart_serie|join(', ') }}]
         }]
     },
