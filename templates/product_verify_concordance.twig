@@ -1,0 +1,53 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}
+    Produtos Importados: Lista
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <form method="POST" action="{{ path_for('products.import') }}">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Verificar Conformidade</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class=" text-primary">
+                                <tr>
+                                    <th>
+                                        Produto
+                                    </th>
+                                    <th>
+                                        Porcentagem
+                                    </th>
+                                    <th>
+                                        Valor Alocado
+                                    </th>
+                                    <th>
+                                        Porcentagem Pretendida
+                                    </th>
+                                    <th>
+                                        Correção Sugerida
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for application in applications %}
+                                <tr>
+                                    <th>{{ application.product }}</th>
+                                    <td>{{ application.percentage }}%</td>
+                                    <td>R$ {{ application.value|number_format(2, ',', '.') }}</td>
+                                    <td>{{ application.target }}%</td>
+                                    <td>R$ {{ (application.target * adjustment_tax)|number_format(2, ',', '.') }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

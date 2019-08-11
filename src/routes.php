@@ -16,6 +16,7 @@ $app->get('/chart/allocation-type', ChartController::class.':allocationType')->s
 $app->get('/products/import/form',ProductController::class.':importForm')->setName('products.import_form');
 $app->post('/products/import/list',ProductController::class.':importList')->setName('products.import_list');
 $app->post('/products/import',ProductController::class.':import')->setName('products.import');
+$app->get('/products/verify-concordance',ProductController::class.':verifyConcordance')->setName('products.verify_concordance');
 
 $app->get('/productTypes',ProductTypeController::class.':index')->setName('product_types.index');
 $app->get('/productTypes/create',ProductTypeController::class.':create')->setName('product_types.create');

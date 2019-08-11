@@ -4,6 +4,39 @@ namespace App\Controllers;
 
 class ProductController extends Controller
 {    
+    public function verifyConcordance($request, $response){ 
+        $products = $this->c->db->query("Select SUM(value) as value, product_type.name, product_type.target From product 
+            Inner Join product_type on product_type.id = product.product_type_id
+            WHERE product.deleted_at IS NULL
+            Group By product_type.id")->fetchAll(\PDO::FETCH_OBJ);
+
+        $applications = array();
+        $total_value = 0;
+        foreach($products as $product){
+            $applications[] = array(
+                "product" => $product->name,
+                "target" => $product->target,
+                "value" => round($product->value, 2)
+            );
+            $total_value+=$product->value;
+        }
+        
+        $max_divergence = 0;
+        $adjustment_tax = 0;
+        foreach ($applications as $key => $value) {
+            $applications[$key]["percentage"] = round($applications[$key]["value"]/$total_value, 4)*100;
+            $divergence = $applications[$key]["percentage"]-$applications[$key]["target"];
+            if($divergence > $max_divergence){
+                $max_divergence = $divergence;
+                $adjustment_tax = round($applications[$key]["value"]/$applications[$key]["target"], 4);
+            }
+        }
+
+        //var_dump($applications); die();
+
+        return $this->c->view->render($response, 'product_verify_concordance.twig', compact('applications', 'adjustment_tax'));        
+    }
+
     public function importForm($request, $response){ 
         return $this->c->view->render($response, 'product_import_form.twig');        
     }
