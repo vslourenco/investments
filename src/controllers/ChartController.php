@@ -18,7 +18,7 @@ class ChartController extends Controller
 
         $total = array_sum($chart_serie);
         foreach ($chart_serie as $key => $value) {
-            $chart_serie[$key] = round($chart_serie[$key]/$total, 2)*100;
+            $chart_serie[$key] = round($chart_serie[$key]/$total, 4)*100;
         }
         
         return $this->c->view->render($response, 'chart_allocation_type.twig', compact('chart_label', 'chart_serie', 'chart_color'));        
