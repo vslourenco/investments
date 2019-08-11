@@ -16,9 +16,11 @@ class ProductTypeController extends Controller
 
     public function store($request, $response){         
         $params = $request->getParams();    
-        $product_type = $this->c->db->prepare("INSERT INTO product_type (name, created_at) VALUES (:name, NOW())");
+        $product_type = $this->c->db->prepare("INSERT INTO product_type (name, color, target, created_at) VALUES (:name, :color, :target, NOW())");
         $product_type->execute(array(
-            ':name' => $params['name']
+            ':name' => $params['name'],
+            ':color' => $params['color'],
+            ':target' => $params['target']
           ));
         return $response->withRedirect($this->c->get('router')->pathFor('product_types.index'));           
     }
@@ -32,9 +34,11 @@ class ProductTypeController extends Controller
 
     public function update($request, $response){        
         $params = $request->getParams();  
-        $product_type = $this->c->db->prepare("UPDATE product_type SET name=:name WHERE id=:id");
+        $product_type = $this->c->db->prepare("UPDATE product_type SET name=:name, color=:color, target=:target WHERE id=:id");
         $product_type->execute(array(
             ':name' => $params['name'],
+            ':color' => $params['color'],
+            ':target' => $params['target'],
             ':id' => $params['id']
           ));
         return $response->withRedirect($this->c->get('router')->pathFor('product_types.index'));              
