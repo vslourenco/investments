@@ -13,8 +13,9 @@ $config['renderer'] = [
 $config['db'] = [
     'database_type' => 'mysql',
     'database_name' => 'investment',
-    'server' => 'localhost',
+    'server' => 'mysql',
     'username' => 'root',
     'password' => 'root',
-    'charset' => 'utf8'
+    'charset' => 'UTF8',
+    'collate' => 'utf8_general_ci'
 ];
