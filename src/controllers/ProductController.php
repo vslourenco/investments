@@ -52,6 +52,16 @@ class ProductController extends Controller
         return $response->withRedirect($this->c->get('router')->pathFor('products.index'));              
     }
 
+    public function delete($request, $response, $args){   
+        $id = isset($args["id"]) ? $args["id"] : "";
+        $product = $this->c->db->prepare("UPDATE product SET deleted_at=:date WHERE id=:id");
+        $product->execute(array(
+            ':date' => date("Y-m-d H:i"),
+            ':id' => $id
+          ));
+        return $response->withRedirect($this->c->get('router')->pathFor('products.index'));              
+    }
+
     public function verifyConcordance($request, $response){ 
         $products = $this->c->db->query("Select SUM(value) as value, product_type.name, product_type.target From product 
             Inner Join product_type on product_type.id = product.product_type_id
