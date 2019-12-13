@@ -43,6 +43,13 @@
                                     <td>R$ {{ (application.target * adjustment_tax)|number_format(2, ',', '.') }}</td>
                                 </tr>
                             {% endfor %}
+                                <tr>
+                                    <th>Total</th>
+                                    <td></td>
+                                    <th>R$ {{ total_value|number_format(2, ',', '.') }}</td>
+                                    <td></td>
+                                    <th>R$ {{ total_with_adjust|number_format(2, ',', '.') }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

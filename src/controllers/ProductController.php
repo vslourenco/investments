@@ -8,7 +8,7 @@ class ProductController extends Controller
         $products = $this->c->db->query("SELECT product.*, product_type.name as type FROM product 
             INNER JOIN product_type ON product.product_type_id = product_type.id
             WHERE product.deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
-        
+
         return $this->c->view->render($response, 'product_index.twig', compact('products'));        
     }
 
@@ -40,9 +40,14 @@ class ProductController extends Controller
             }
         }
 
+        $total_with_adjust = 0;
+        foreach ($applications as $key => $value) {
+            $total_with_adjust += $applications[$key]["target"] * $adjustment_tax;
+        }
+
         //var_dump($applications); die();
 
-        return $this->c->view->render($response, 'product_verify_concordance.twig', compact('applications', 'adjustment_tax'));        
+        return $this->c->view->render($response, 'product_verify_concordance.twig', compact('applications', 'adjustment_tax', 'total_value', 'total_with_adjust'));        
     }
 
     public function importForm($request, $response){ 
