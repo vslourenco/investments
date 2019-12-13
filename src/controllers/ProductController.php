@@ -12,6 +12,28 @@ class ProductController extends Controller
         return $this->c->view->render($response, 'product_index.twig', compact('products'));        
     }
 
+    public function edit($request, $response, $args){ 
+        $id = isset($args["id"]) ? $args["id"] : "";
+        $action= $this->c->get('router')->pathFor('products.update');
+        $product = $this->c->db->query("SELECT * FROM product WHERE id='$id'")->fetch(\PDO::FETCH_OBJ);
+        $product_types = $this->c->db->query("SELECT * FROM product_type WHERE deleted_at IS NULL OR id = {$product->product_type_id}")->fetchAll(\PDO::FETCH_OBJ);
+        return $this->c->view->render($response, 'product_form.twig', compact('product', 'action', 'product_types'));                
+    }
+
+    public function update($request, $response){        
+        $params = $request->getParams();  
+        $product = $this->c->db->prepare("UPDATE product SET name=:name, product_type_id=:product_type_id, quantity=:quantity, value=:value WHERE id=:id");
+        
+        $product->execute(array(
+            ':name' => $params['name'],
+            ':product_type_id' => $params['product_type_id'],
+            ':quantity' => $params['quantity'],
+            ':value' => $params['value'],
+            ':id' => $params['id']
+          ));
+        return $response->withRedirect($this->c->get('router')->pathFor('products.index'));              
+    }
+
     public function verifyConcordance($request, $response){ 
         $products = $this->c->db->query("Select SUM(value) as value, product_type.name, product_type.target From product 
             Inner Join product_type on product_type.id = product.product_type_id
