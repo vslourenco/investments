@@ -13,6 +13,12 @@ $app->get('/', function($request, $response){
 
 $app->get('/chart/allocation-type', ChartController::class.':allocationType')->setName('chart.allocation.type');
 
+$app->get('/products',ProductController::class.':index')->setName('products.index');
+$app->get('/products/create',ProductController::class.':create')->setName('products.create');
+$app->post('/products/store',ProductController::class.':store')->setName('products.store');
+$app->get('/products/{id}/edit',ProductController::class.':edit')->setName('products.edit');
+$app->post('/products/update',ProductController::class.':update')->setName('products.update');
+$app->get('/products/{id}/delete',ProductController::class.':delete')->setName('products.delete');
 $app->get('/products/import/form',ProductController::class.':importForm')->setName('products.import_form');
 $app->post('/products/import/list',ProductController::class.':importList')->setName('products.import_list');
 $app->post('/products/import',ProductController::class.':import')->setName('products.import');

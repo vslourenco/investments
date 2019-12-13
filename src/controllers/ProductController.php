@@ -4,6 +4,14 @@ namespace App\Controllers;
 
 class ProductController extends Controller
 {    
+    public function index($request, $response){         
+        $products = $this->c->db->query("SELECT product.*, product_type.name as type FROM product 
+            INNER JOIN product_type ON product.product_type_id = product_type.id
+            WHERE product.deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
+        
+        return $this->c->view->render($response, 'product_index.twig', compact('products'));        
+    }
+
     public function verifyConcordance($request, $response){ 
         $products = $this->c->db->query("Select SUM(value) as value, product_type.name, product_type.target From product 
             Inner Join product_type on product_type.id = product.product_type_id

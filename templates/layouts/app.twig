@@ -58,12 +58,33 @@
                                 </div>
                             </li>
 
+
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path_for('products.import_form') }}">
-                                    <i class="material-icons">cloud_upload</i>
-                                    <p>Importar Produtos</p>
+                                <a aria-expanded="false" class="nav-link collapsed" data-toggle="collapse" href="#produtoSubMenu">
+                                    <i class="material-icons">monetization_on</i>
+                                    <p>Produtos
+                                        <b class="caret"></b>
+                                    </p>
                                 </a>
+                                <div class="collapse" id="produtoSubMenu" style="">
+                                    <ul class="nav">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path_for('products.index') }}">
+                                                <i class="material-icons">search </i>
+                                                <span class="sidebar-normal">Consultar</span>
+                                            </a>
+                                        </li>
+                                            <li class="nav-item">
+                                            <a class="nav-link" href="{{ path_for('products.import_form') }}">
+                                                <i class="material-icons">cloud_upload</i>
+                                                <p>Importar Produtos</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
+
+                           
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path_for('products.verify_concordance') }}">
