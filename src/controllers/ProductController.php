@@ -12,6 +12,24 @@ class ProductController extends Controller
         return $this->c->view->render($response, 'product_index.twig', compact('products'));        
     }
 
+    public function create($request, $response){  
+        $action= $this->c->get('router')->pathFor('products.store');
+        $product_types = $this->c->db->query("SELECT * FROM product_type WHERE deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
+        return $this->c->view->render($response, 'product_form.twig', compact('action', 'product_types'));                          
+    }
+
+    public function store($request, $response){         
+        $params = $request->getParams();    
+        $product = $this->c->db->prepare("INSERT INTO product (name, product_type_id, quantity, value, created_at) VALUES (:name, :product_type_id, :quantity, :value, NOW())");
+        $product->execute(array(
+            ':name' => $params['name'],
+            ':product_type_id' => $params['product_type_id'],
+            ':quantity' => $params['quantity'],
+            ':value' => $params['value']
+          ));
+        return $response->withRedirect($this->c->get('router')->pathFor('products.index'));           
+    }
+
     public function edit($request, $response, $args){ 
         $id = isset($args["id"]) ? $args["id"] : "";
         $action= $this->c->get('router')->pathFor('products.update');
@@ -23,7 +41,7 @@ class ProductController extends Controller
     public function update($request, $response){        
         $params = $request->getParams();  
         $product = $this->c->db->prepare("UPDATE product SET name=:name, product_type_id=:product_type_id, quantity=:quantity, value=:value WHERE id=:id");
-        
+
         $product->execute(array(
             ':name' => $params['name'],
             ':product_type_id' => $params['product_type_id'],
