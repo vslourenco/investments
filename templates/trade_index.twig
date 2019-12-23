@@ -1,0 +1,64 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}
+    Movimentações
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Movimentações</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="{{ path_for('trades.create') }}">
+                            <button class="btn btn-success">
+                                <i class="material-icons">add</i>
+                                Adicionar Movimentação
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <tr>
+                                <th class="col-md-6">
+                                    Produto
+                                </th>
+                                <th class="col-md-2">
+                                    Data
+                                </th>
+                                <th class="col-md-2">
+                                    Valor
+                                </th>
+                                <th class="col-md-2"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for trade in trades %}
+                                <tr>
+                                    <td>{{ trade.name }}</td>
+                                    <td>{{ trade.date | date("d/m/Y") }}</td>
+                                    <td>{{ trade.value | format_currency('BRL') }}</td>
+                                    <td class="text-right">
+                                        <a href="{{ path_for('trades.edit', {'id': trade.id}) }}">
+                                            <button class="btn btn-warning btn-link btn-sm" data-original-title="Editar" rel="tooltip" title="" type="button">
+                                                <i class="material-icons">create</i>
+                                            </button>
+                                        </a>
+                                        <button class="btn btn-danger btn-link btn-sm" data-original-title="Excluir" rel="tooltip" title="" type="button" onclick="validateDelete('{{ path_for('trades.delete', {'id': trade.id}) }}')">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

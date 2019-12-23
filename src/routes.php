@@ -6,6 +6,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use App\Controllers\ChartController;
 use App\Controllers\ProductController;
 use App\Controllers\ProductTypeController;
+use App\Controllers\TradeController;
 
 $app->get('/', function($request, $response){
     return $this->view->render($response, 'index.twig');
@@ -30,5 +31,13 @@ $app->post('/productTypes/store',ProductTypeController::class.':store')->setName
 $app->get('/productTypes/{id}/edit',ProductTypeController::class.':edit')->setName('product_types.edit');
 $app->post('/productTypes/update',ProductTypeController::class.':update')->setName('product_types.update');
 $app->get('/productTypes/{id}/delete',ProductTypeController::class.':delete')->setName('product_types.delete');
+
+
+$app->get('/trades',TradeController::class.':index')->setName('trades.index');
+$app->get('/trades/create',TradeController::class.':create')->setName('trades.create');
+$app->post('/trades/store',TradeController::class.':store')->setName('trades.store');
+$app->get('/trades/{id}/edit',TradeController::class.':edit')->setName('trades.edit');
+$app->post('/trades/update',TradeController::class.':update')->setName('trades.update');
+$app->get('/trades/{id}/delete',TradeController::class.':delete')->setName('trades.delete');
 
 

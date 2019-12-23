@@ -40,24 +40,11 @@
                             </li>
 
                             <li class="nav-item">
-                                <a aria-expanded="false" class="nav-link collapsed" data-toggle="collapse" href="#graficoSubMenu">
-                                    <i class="material-icons">bar_chart</i>
-                                    <p>Gráficos
-                                        <b class="caret"></b>
-                                    </p>
+                                <a class="nav-link" href="{{ path_for('product_types.index') }}">
+                                    <i class="material-icons">business_center</i>
+                                    <p>Tipos de Produto</p>
                                 </a>
-                                <div class="collapse" id="graficoSubMenu" style="">
-                                    <ul class="nav">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{{ path_for('chart.allocation.type') }}">
-                                                <i class="material-icons">menu</i>
-                                                <span class="sidebar-normal">Alocação/Tipo</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
                             </li>
-
 
                             <li class="nav-item">
                                 <a aria-expanded="false" class="nav-link collapsed" data-toggle="collapse" href="#produtoSubMenu">
@@ -84,19 +71,36 @@
                                 </div>
                             </li>
 
-                           
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path_for('trades.index') }}">
+                                    <i class="material-icons">sync_alt</i>
+                                    <p>Movimentações</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a aria-expanded="false" class="nav-link collapsed" data-toggle="collapse" href="#graficoSubMenu">
+                                    <i class="material-icons">pie_chart</i>
+                                    <p>Gráficos
+                                        <b class="caret"></b>
+                                    </p>
+                                </a>
+                                <div class="collapse" id="graficoSubMenu" style="">
+                                    <ul class="nav">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path_for('chart.allocation.type') }}">
+                                                <i class="material-icons">menu</i>
+                                                <span class="sidebar-normal">Alocação/Tipo</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>                           
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path_for('products.verify_concordance') }}">
                                     <i class="material-icons">visibility</i>
                                     <p>Verificar Conformidade</p>
-                                </a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path_for('product_types.index') }}">
-                                    <i class="material-icons">business_center</i>
-                                    <p>Tipos de Produto</p>
                                 </a>
                             </li>
 

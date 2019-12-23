@@ -51,6 +51,6 @@ class ProductTypeController extends Controller
             ':date' => date("Y-m-d H:i"),
             ':id' => $id
           ));
-        return $response->withRedirect($this->c->get('router')->pathFor('product_types.index'));              
+        return $response->withRedirect($this->c->get('router')->pathFor('product_types.index'));
     }
 }
