@@ -36,7 +36,12 @@ class ProductController extends Controller
         $action= $this->c->get('router')->pathFor('products.update');
         $product = $this->c->db->query("SELECT * FROM product WHERE id='$id'")->fetch(\PDO::FETCH_OBJ);
         $product_types = $this->c->db->query("SELECT * FROM product_type WHERE deleted_at IS NULL OR id = {$product->product_type_id}")->fetchAll(\PDO::FETCH_OBJ);
-        return $this->c->view->render($response, 'product_form.twig', compact('product', 'action', 'product_types'));                
+
+        $trades = $this->c->db->query("SELECT * FROM trade 
+            WHERE product_id = '$id' AND  deleted_at IS NULL
+            ORDER BY date DESC")->fetchAll(\PDO::FETCH_OBJ);
+
+        return $this->c->view->render($response, 'product_form.twig', compact('product', 'action', 'product_types', 'trades'));                
     }
 
     public function update($request, $response){        
