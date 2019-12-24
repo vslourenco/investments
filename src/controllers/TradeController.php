@@ -21,11 +21,12 @@ class TradeController extends Controller
 
     public function store($request, $response){         
         $params = $request->getParams();    
-        $trade = $this->c->db->prepare("INSERT INTO trade (product_id, value, date, created_at) VALUES (:product_id, :value, :date, NOW())");
+        $trade = $this->c->db->prepare("INSERT INTO trade (product_id, value, date, note, created_at) VALUES (:product_id, :value, :date, :note, NOW())");
         $trade->execute(array(
             ':product_id' => $params['product_id'],
             ':value' => $params['value'],
-            ':date' => $params['date']
+            ':date' => $params['date'],
+            ':note' => $params['note']
           ));
         return $response->withRedirect($this->c->get('router')->pathFor('trades.index'));           
     }
@@ -40,12 +41,13 @@ class TradeController extends Controller
 
     public function update($request, $response){        
         $params = $request->getParams();  
-        $trade = $this->c->db->prepare("UPDATE trade SET product_id=:product_id, value=:value, date=:date WHERE id=:id");
+        $trade = $this->c->db->prepare("UPDATE trade SET product_id=:product_id, value=:value, date=:date, note=:note WHERE id=:id");
 
         $trade->execute(array(
             ':product_id' => $params['product_id'],
             ':value' => $params['value'],
             ':date' => preg_replace('#(\d{2})/(\d{2})/(\d{4})#', '$3-$2-$1 $4', $params['date']),
+            ':note' => $params['note'],
             ':id' => $params['id']
           ));
 

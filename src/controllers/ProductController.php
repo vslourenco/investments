@@ -20,12 +20,13 @@ class ProductController extends Controller
 
     public function store($request, $response){         
         $params = $request->getParams();    
-        $product = $this->c->db->prepare("INSERT INTO product (name, product_type_id, quantity, value, created_at) VALUES (:name, :product_type_id, :quantity, :value, NOW())");
+        $product = $this->c->db->prepare("INSERT INTO product (name, product_type_id, quantity, value, note, created_at) VALUES (:name, :product_type_id, :quantity, :value, :note, NOW())");
         $product->execute(array(
             ':name' => $params['name'],
             ':product_type_id' => $params['product_type_id'],
             ':quantity' => $params['quantity'],
-            ':value' => $params['value']
+            ':value' => $params['value'],
+            ':note' => $params['note']
           ));
         return $response->withRedirect($this->c->get('router')->pathFor('products.index'));           
     }
@@ -40,13 +41,14 @@ class ProductController extends Controller
 
     public function update($request, $response){        
         $params = $request->getParams();  
-        $product = $this->c->db->prepare("UPDATE product SET name=:name, product_type_id=:product_type_id, quantity=:quantity, value=:value WHERE id=:id");
+        $product = $this->c->db->prepare("UPDATE product SET name=:name, product_type_id=:product_type_id, quantity=:quantity, value=:value, note=:note WHERE id=:id");
 
         $product->execute(array(
             ':name' => $params['name'],
             ':product_type_id' => $params['product_type_id'],
             ':quantity' => $params['quantity'],
             ':value' => $params['value'],
+            ':note' => $params['note'],
             ':id' => $params['id']
           ));
         return $response->withRedirect($this->c->get('router')->pathFor('products.index'));              
