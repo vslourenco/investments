@@ -4,12 +4,22 @@ namespace App\Controllers;
 
 class ProductController extends Controller
 {    
-    public function index($request, $response){         
+    public function index($request, $response){    
+
+        $sql_comp="";
+        if($request->getQueryParam("name")!=""){
+            $sql_comp .= " AND product.name LIKE '%{$request->getQueryParam("name")}%'";
+        }
+        if($request->getQueryParam("product_type")!=""){
+            $sql_comp .= " AND product.product_type_id = {$request->getQueryParam("product_type")}";            
+        }
         $products = $this->c->db->query("SELECT product.*, product_type.name as type FROM product 
             INNER JOIN product_type ON product.product_type_id = product_type.id
-            WHERE product.deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
+            WHERE product.deleted_at IS NULL $sql_comp")->fetchAll(\PDO::FETCH_OBJ);
 
-        return $this->c->view->render($response, 'product_index.twig', compact('products'));        
+        $product_types = $this->c->db->query("SELECT * FROM product_type WHERE deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
+
+        return $this->c->view->render($response, 'product_index.twig', compact('products', 'product_types'));        
     }
 
     public function create($request, $response){  

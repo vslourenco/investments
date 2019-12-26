@@ -12,9 +12,35 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <form method="GET" action="{{ path_for('products.index') }}" class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-floating">Nome</label>
+                                    <input class="form-control" name="name" value="{{ product.name }}" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group bmd-form-group">
+                                    <label class="bmd-label-static">Tipo</label>
+                                    <select class="form-control custom-select" name="product_type">
+                                        <option value=""></option>
+                                        {% for product_type in product_types %}
+                                            <option value="{{ product_type.id }}" {{ product_type.id==product.product_type_id ? "selected" : "" }}>{{ product_type.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-info" type="submit">
+                                    <i class="material-icons">search</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-md-3">
                         <a href="{{ path_for('products.create') }}">
-                            <button class="btn btn-success">
+                            <button class="btn btn-success" type="button">
                                 <i class="material-icons">add</i>
                                 Adicionar Produto
                             </button>
