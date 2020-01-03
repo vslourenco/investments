@@ -7,19 +7,38 @@ class ProductController extends Controller
     public function index($request, $response){    
 
         $sql_comp="";
+        $sql_offset="";
+        $sql_limit= 10;
+        $current_page= 1;
+        $uri = $request->getUri()->getPath()."?";
+
         if($request->getQueryParam("name")!=""){
             $sql_comp .= " AND product.name LIKE '%{$request->getQueryParam("name")}%'";
+            $uri .= "name=".$request->getQueryParam("name");
         }
         if($request->getQueryParam("product_type")!=""){
-            $sql_comp .= " AND product.product_type_id = {$request->getQueryParam("product_type")}";            
+            $sql_comp .= " AND product.product_type_id = {$request->getQueryParam("product_type")}";   
+            $uri .= "product_type=".$request->getQueryParam("product_type");         
         }
+        if($request->getQueryParam("page")!=""){
+            $current_page = $request->getQueryParam("page");
+            $offset = $sql_limit*($current_page-1);
+            $sql_offset .= " OFFSET $offset";            
+        }
+
+        $quantity_products = $this->c->db->query("SELECT product.id FROM product 
+            INNER JOIN product_type ON product.product_type_id = product_type.id
+            WHERE product.deleted_at IS NULL $sql_comp")->rowCount();
+        $quantity_pages = ceil($quantity_products / $sql_limit);
+
         $products = $this->c->db->query("SELECT product.*, product_type.name as type FROM product 
             INNER JOIN product_type ON product.product_type_id = product_type.id
-            WHERE product.deleted_at IS NULL $sql_comp")->fetchAll(\PDO::FETCH_OBJ);
+            WHERE product.deleted_at IS NULL $sql_comp
+            LIMIT $sql_limit $sql_offset")->fetchAll(\PDO::FETCH_OBJ);
 
         $product_types = $this->c->db->query("SELECT * FROM product_type WHERE deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
 
-        return $this->c->view->render($response, 'product_index.twig', compact('products', 'product_types'));        
+        return $this->c->view->render($response, 'product_index.twig', compact('products', 'product_types', 'current_page', 'quantity_pages', 'uri'));        
     }
 
     public function create($request, $response){  
