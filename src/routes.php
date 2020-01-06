@@ -6,6 +6,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use App\Controllers\ChartController;
 use App\Controllers\ProductController;
 use App\Controllers\ProductTypeController;
+use App\Controllers\ProductSubTypeController;
 use App\Controllers\TradeController;
 
 $app->get('/', function($request, $response){
@@ -31,6 +32,14 @@ $app->post('/productTypes/store',ProductTypeController::class.':store')->setName
 $app->get('/productTypes/{id}/edit',ProductTypeController::class.':edit')->setName('product_types.edit');
 $app->post('/productTypes/update',ProductTypeController::class.':update')->setName('product_types.update');
 $app->get('/productTypes/{id}/delete',ProductTypeController::class.':delete')->setName('product_types.delete');
+
+$app->get('/productSubTypes',ProductSubTypeController::class.':index')->setName('product_subtypes.index');
+$app->get('/productSubTypes/create',ProductSubTypeController::class.':create')->setName('product_subtypes.create');
+$app->post('/productSubTypes/store',ProductSubTypeController::class.':store')->setName('product_subtypes.store');
+$app->get('/productSubTypes/{id}/edit',ProductSubTypeController::class.':edit')->setName('product_subtypes.edit');
+$app->post('/productSubTypes/update',ProductSubTypeController::class.':update')->setName('product_subtypes.update');
+$app->get('/productSubTypes/{id}/delete',ProductSubTypeController::class.':delete')->setName('product_subtypes.delete');
+$app->get('/productSubTypes/productType/{id}',ProductSubTypeController::class.':getByType')->setName('product_subtypes.get_by_type');
 
 
 $app->get('/trades',TradeController::class.':index')->setName('trades.index');

@@ -1,0 +1,60 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}
+    Sub-Tipos de Produto: Lista
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Sub-Tipos de Produto</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a href="{{ path_for('product_subtypes.create') }}">
+                            <button class="btn btn-success">
+                                <i class="material-icons">add</i>
+                                Adicionar Sub-Tipo
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" text-primary">
+                            <tr>
+                                <th>
+                                    Nome
+                                </th>
+                                <th>
+                                    Tipo
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product_subtype in product_subtypes %}
+                                <tr>
+                                    <td>{{ product_subtype.name }}</td>
+                                    <td>{{ product_subtype.product_type }}</td>
+                                    <td class="text-right">
+                                        <a href="{{ path_for('product_subtypes.edit', {'id': product_subtype.id}) }}">
+                                            <button class="btn btn-warning btn-link btn-lg" data-original-title="Editar" rel="tooltip" title="" type="button">
+                                                <i class="material-icons">create</i>
+                                            </button>
+                                        </a>
+                                        <button class="btn btn-danger btn-link btn-lg" data-original-title="Excluir" rel="tooltip" title="" type="button" onclick="validateDelete('{{ path_for('product_subtypes.delete', {'id': product_subtype.id}) }}')">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
