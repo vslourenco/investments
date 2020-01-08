@@ -49,10 +49,11 @@ class ProductController extends Controller
 
     public function store($request, $response){         
         $params = $request->getParams();    
-        $product = $this->c->db->prepare("INSERT INTO product (name, product_type_id, quantity, value, note, created_at) VALUES (:name, :product_type_id, :quantity, :value, :note, NOW())");
+        $product = $this->c->db->prepare("INSERT INTO product (name, product_type_id, product_subtype_id, quantity, value, note, created_at) VALUES (:name, :product_type_id, :product_subtype_id, :quantity, :value, :note, NOW())");
         $product->execute(array(
             ':name' => $params['name'],
             ':product_type_id' => $params['product_type_id'],
+            ':product_subtype_id' => $params['product_subtype_id'],
             ':quantity' => $params['quantity'],
             ':value' => $params['value'],
             ':note' => $params['note']
@@ -75,11 +76,12 @@ class ProductController extends Controller
 
     public function update($request, $response){        
         $params = $request->getParams();  
-        $product = $this->c->db->prepare("UPDATE product SET name=:name, product_type_id=:product_type_id, quantity=:quantity, value=:value, note=:note WHERE id=:id");
+        $product = $this->c->db->prepare("UPDATE product SET name=:name, product_type_id=:product_type_id, product_subtype_id=:product_subtype_id, quantity=:quantity, value=:value, note=:note WHERE id=:id");
 
         $product->execute(array(
             ':name' => $params['name'],
             ':product_type_id' => $params['product_type_id'],
+            ':product_subtype_id' => $params['product_subtype_id'],
             ':quantity' => $params['quantity'],
             ':value' => $params['value'],
             ':note' => $params['note'],

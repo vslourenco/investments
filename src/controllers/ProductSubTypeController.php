@@ -58,9 +58,9 @@ class ProductSubTypeController extends Controller
         return $response->withRedirect($this->c->get('router')->pathFor('product_subtypes.index'));
     }
 
-    public function getByType($request, $response){   
+    public function getByType($request, $response, $args){   
         $id = isset($args["id"]) ? $args["id"] : "";
-        $product_subtypes = $this->c->db->query("SELECT * FROM product_subtype WHERE product_type_id='$id' AND deleted_at IS NULL")->fetch(\PDO::FETCH_OBJ);
-        return $this->c->view->render($response, 'product_subtype_form.twig', compact('action', 'product_types'));                          
+        $product_subtypes = $this->c->db->query("SELECT * FROM product_subtype WHERE product_type_id='$id' AND deleted_at IS NULL")->fetchAll(\PDO::FETCH_ASSOC);
+        return $response->withJson($product_subtypes);                 
     }
 }

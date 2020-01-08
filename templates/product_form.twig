@@ -15,20 +15,27 @@
                 <form method="POST" action="{{ action }}">
                     <input name="id" value="{{ product.id }}" type="hidden">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <div class="form-group bmd-form-group">
                                 <label class="bmd-label-floating">Nome</label>
                                 <input class="form-control" name="name" value="{{ product.name }}" type="text">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group bmd-form-group">
                                 <label class="bmd-label-static">Tipo</label>
-                                <select class="form-control custom-select" name="product_type_id">
+                                <select class="form-control custom-select" name="product_type_id" id="product_type_id" onChange="getSubTypes(null)">
                                     <option value=""></option>
                                     {% for product_type in product_types %}
                                         <option value="{{ product_type.id }}" {{ product_type.id==product.product_type_id ? "selected" : "" }}>{{ product_type.name }}</option>
                                     {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group bmd-form-group">
+                                <label class="bmd-label-static">Sub-Tipo</label>
+                                <select class="form-control custom-select" name="product_subtype_id" id="product_subtype_id">
                                 </select>
                             </div>
                         </div>
@@ -132,6 +139,26 @@
             }
 
         });
+
+        getSubTypes({{ product.product_subtype_id }});
     });
+
+    function getSubTypes(selected){
+        let product_type = $("#product_type_id").val();
+        $("#product_subtype_id").empty();
+
+        $.get('/productSubTypes/productType/'+product_type,
+            {},
+            function(result){
+                $("#product_subtype_id").append(new Option('', ''));
+                $.each(result, function(key, dados){
+                    $("#product_subtype_id").append(new Option(dados.name, dados.id));
+                });
+                $("#product_subtype_id").val(selected).change();
+            }
+        );
+
+    }
+
 </script>
 {% endblock %}
