@@ -9,11 +9,29 @@
     <div class="col-md-8">
         <div class="card card-chart">
             <div class="card-header card-header-primary">
-                Alocação por Tipo de Produto
+                Alocação por Sub-Tipo de Produto
             </div>
             <div class="card-body">
-               <div class="ct-chart ct-allocation"></div>
-               <canvas id="allocationChart"></canvas>
+                <form method="GET">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group bmd-form-group">
+                                <label class="bmd-label-static">Tipo</label>
+                                <select class="form-control custom-select" name="product_type">
+                                    <option value=""></option>
+                                    {% for product_type in product_types %}
+                                        <option value="{{ product_type.id }}" {{ product_type.id==product_type_id ? "selected" : "" }}>{{ product_type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Visualizar</button>
+                    </div>       
+
+                </form>
+
+                <div class="ct-chart ct-allocation"></div>
+                <canvas id="allocationChart"></canvas>
             </div>
         </div>
     </div>
@@ -21,6 +39,9 @@
 
 {% block script %}
 <script>
+
+    
+
 
 var allocation = document.getElementById('allocationChart').getContext('2d');
 

@@ -14,6 +14,7 @@ $app->get('/', function($request, $response){
 })->setName('home');
 
 $app->get('/chart/allocation-type', ChartController::class.':allocationType')->setName('chart.allocation.type');
+$app->get('/chart/allocation-subtype', ChartController::class.':allocationSubType')->setName('chart.allocation.subtype');
 
 $app->get('/products',ProductController::class.':index')->setName('products.index');
 $app->get('/products/create',ProductController::class.':create')->setName('products.create');
@@ -48,5 +49,8 @@ $app->post('/trades/store',TradeController::class.':store')->setName('trades.sto
 $app->get('/trades/{id}/edit',TradeController::class.':edit')->setName('trades.edit');
 $app->post('/trades/update',TradeController::class.':update')->setName('trades.update');
 $app->get('/trades/{id}/delete',TradeController::class.':delete')->setName('trades.delete');
+$app->get('/trades/import/form',TradeController::class.':importForm')->setName('trades.import_form');
+$app->post('/trades/import/list',TradeController::class.':importList')->setName('trades.import_list');
+$app->post('/trades/import',TradeController::class.':import')->setName('trades.import');
 
 

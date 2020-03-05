@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="col-md-12">
-        <form method="POST" name="form_store" action="{{ path_for('products.import') }}">
+        <form method="POST" name="form_store" action="{{ path_for('trades.import') }}">
             <div class="card">
                 <div class="card-header card-header-primary">
                     <h4 class="card-title">Produtos Importados</h4>
@@ -17,10 +17,10 @@
                             <thead class=" text-primary">
                                 <tr>
                                     <th>
-                                        Nome
+                                        Data
                                     </th>
                                     <th>
-                                        Tipo
+                                        Nome
                                     </th>
                                     <th>
                                         Valor
@@ -31,29 +31,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for product in products %}
+                                {% for trade in trades %}
                                     <tr>
                                         <td>
-                                            <input type="hidden" name="product_name[]" value="{{ product.name }}">
-                                            {{ product.name }} {{ product.type }}
+                                            <input type="hidden" name="trade_date[]" value="{{ trade.date }}">
+                                            {{ trade.date }}
                                         </td>
                                         <td>
-                                            <select class="form-control" name="product_type[]">
+                                            {{ trade.product }}
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="trade_value[]" value="{{ trade.value }}">
+                                            {{ trade.value }}
+                                        </td>
+                                        <td>
+                                            <select class="form-control" name="product_id[]">
                                                 <option value=""></option>
-                                                {% for product_type in product_types %}
-                                                    <option value="{{ product_type.id }}" {{ product_type.id==product.type ? "selected" : "" }}>{{ product_type.name }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="product_value[]" value="{{ product.value }}">
-                                            {{ product.value }}
-                                        </td>
-                                        <td>
-                                            <select class="form-control" name="stored_product_id[]">
-                                                <option value=""></option>
-                                                {% for stored_product in stored_products %}
-                                                    <option value="{{ stored_product.id }}" {{ stored_product.id==product.product_id ? "selected" : "" }}>{{ stored_product.name }}</option>
+                                                {% for product in products %}
+                                                    <option value="{{ product.id }}" {{ product.id==trade.product_id ? "selected" : "" }}>{{ product.name }}</option>
                                                 {% endfor %}
                                             </select>
                                         </td>
@@ -74,18 +69,18 @@
 {% block script %}
 <script type="text/javascript">
     function checkForm(){
-        if(!checkEmptyTypes()){
+        if(!checkEmptyProducts()){
             document.form_store.submit();
         }
     }
 
-    function checkEmptyTypes(){
-        let product_types = document.getElementsByName("product_type[]");
+    function checkEmptyProducts(){
+        let products = document.getElementsByName("product_id[]");
 
-        for (let i = 0; i < product_types.length; i++) {
-            if (product_types[i].value == ""){
-                product_types[i].focus();
-                alert("Selecione o Tipo de Produto");
+        for (let i = 0; i < products.length; i++) {
+            if (products[i].value == ""){
+                products[i].focus();
+                alert("Selecione o Produto");
                 return true;
             }            
         }

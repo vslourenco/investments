@@ -1,0 +1,32 @@
+{% extends "layouts/app.twig" %}
+
+{% block title %}
+    Importar Movimentações
+{% endblock %}
+
+{% block content %}
+
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-warning">
+                <h4 class="card-title">Importar Movimentações</h4>
+                <p class="card-category">Importe sua lista de movimentações</p>
+            </div>
+            <div class="card-body">
+                <form enctype='multipart/form-data' method="POST" action="{{ path_for('trades.import_list') }}">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="btn btn-info btn-sm">
+                                <span>Selecione o arquivo:</span>
+                                <input type="file" name="document">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-success pull-right" type="submit">Enviar Arquivo</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

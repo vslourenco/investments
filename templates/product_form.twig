@@ -118,10 +118,13 @@
             $(".trade_value").each(function( index ) {
                 let value = $(this).text();
                 value = value.replace("R$", "");
+                value = value.replace(",", "");
                 value = parseFloat(value);
 
                 total_trade += value;
+
             });
+            total_trade = Math.floor(total_trade * 100) / 100
 
             if(total_trade == total_product){
                 Swal.fire({

@@ -181,6 +181,10 @@ class ProductController extends Controller
                     $type = 7;
                     break;
 
+                case 'Renda Fixa Pré':
+                    $type = 7;
+                    break;
+
                 case 'Tesouro Direto':
                     $type = 2;
                     break;
@@ -200,14 +204,25 @@ class ProductController extends Controller
                 default:
                     $type= 0;
                     break;
-            }           
+            }      
             $product_name = $worksheet->getCell("A".$i)->getValue();
-            $products[] = array(
-                'name' => $product_name, 
-                'type' => $type, 
-                'value' => $worksheet->getCell("E".$i)->getValue(), 
-                'product_id' => isset($products_by_name[$product_name]) ? $products_by_name[$product_name]->id : 0, 
-            );
+            $index = $this->getSubArray($products, $product_name);
+            if(!$index){
+                $products[] = array(
+                    'name' => $product_name, 
+                    'type' => $type, 
+                    'value' => $worksheet->getCell("E".$i)->getValue(), 
+                    'product_id' => isset($products_by_name[$product_name]) ? $products_by_name[$product_name]->id : 0, 
+                );
+            }else{
+                $product_value = str_replace(".", "", $products[$index]["value"]);
+                $product_value = str_replace(",", ".", $product_value);
+
+                $new_value = str_replace(".", "", $worksheet->getCell("E".$i)->getValue());
+                $new_value = str_replace(",", ".", $new_value);
+
+                $products[$index]["value"] = number_format($product_value+$new_value, 2, ",", ".");
+            }
             //echo "Produto: ".$worksheet->getCell("A".$i)." | Classe: ".$worksheet->getCell("B".$i)." | Valor Aplicado: ".$worksheet->getCell("E".$i)."<br/>";    
         }
 
@@ -241,4 +256,14 @@ class ProductController extends Controller
         }
         return $response->withRedirect($this->c->get('router')->pathFor('chart.allocation.type'));  
     }
+
+    private function getSubArray($matrix, $val) {
+        foreach($matrix as $key => $value) {
+            if(in_array($val, $value, true)) 
+                return $key;
+        }
+        return false;
+    }
+
+
 }

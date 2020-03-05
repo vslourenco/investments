@@ -68,7 +68,7 @@
                                                 <span class="sidebar-normal">Consultar</span>
                                             </a>
                                         </li>
-                                            <li class="nav-item">
+                                        <li class="nav-item">
                                             <a class="nav-link" href="{{ path_for('products.import_form') }}">
                                                 <i class="material-icons">cloud_upload</i>
                                                 <p>Importar Produtos</p>
@@ -78,11 +78,31 @@
                                 </div>
                             </li>
 
+
+
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path_for('trades.index') }}">
+                                <a aria-expanded="false" class="nav-link collapsed" data-toggle="collapse" href="#MovimentacaoSubMenu">
                                     <i class="material-icons">sync_alt</i>
-                                    <p>Movimentações</p>
+                                    <p>Movimentações
+                                        <b class="caret"></b>
+                                    </p>
                                 </a>
+                                <div class="collapse" id="MovimentacaoSubMenu" style="">
+                                    <ul class="nav">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path_for('trades.index') }}">
+                                                <i class="material-icons">search </i>
+                                                <span class="sidebar-normal">Consultar</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path_for('trades.import_form') }}">
+                                                <i class="material-icons">cloud_upload</i>
+                                                <p>Importar Movimentações</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
 
                             <li class="nav-item">
@@ -98,6 +118,12 @@
                                             <a class="nav-link" href="{{ path_for('chart.allocation.type') }}">
                                                 <i class="material-icons">menu</i>
                                                 <span class="sidebar-normal">Alocação/Tipo</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path_for('chart.allocation.subtype') }}">
+                                                <i class="material-icons">menu</i>
+                                                <span class="sidebar-normal">Alocação/Sub-Tipo</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -117,9 +143,10 @@
                 <div class="main-panel">
 
                     <div class="content">
-                        <div class="container-fluid"> {% block content %}{% endblock %}
-                            </div>
+                        <div class="container-fluid"> 
+                            {% block content %}{% endblock %}
                         </div>
+                    </div>
 
                         <footer class="footer">
                             <div class="container-fluid">

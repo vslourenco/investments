@@ -63,4 +63,66 @@ class TradeController extends Controller
           ));
         return $response->withRedirect($this->c->get('router')->pathFor('trades.index'));
     }
+
+    public function importForm($request, $response){ 
+        return $this->c->view->render($response, 'trade_import_form.twig');        
+    }
+
+    public function importList($request, $response){ 
+        
+        $products = $this->c->db->query("SELECT * FROM product WHERE deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
+
+        $products_by_name = array_column($products, NULL, "name");
+
+        $params = $request->getParams();
+        $uploadedFiles = $request->getUploadedFiles();
+
+        $inputFileName = $uploadedFiles["document"]->file;
+        /** Create a new Xlsx Reader  **/
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $spreadsheet = $reader->load($inputFileName);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $last_column = $worksheet->getHighestDataColumn();
+        $last_row = $worksheet->getHighestDataRow();
+       
+        //dd($uploadedFiles["document"]->file);
+        //dd($spreadsheet);
+        //dd($last_column);
+        //dd($last_row);
+        //dd($products_by_name);
+        //dd($products);
+
+        $trades = array();
+        for($i=2; $i<=$last_row; $i++){         
+            $product_name = $worksheet->getCell("B".$i)->getValue();
+            $trades[] = array(
+                'date' => $worksheet->getCell("A".$i)->getValue(), 
+                'product' => $product_name, 
+                'value' => $worksheet->getCell("C".$i)->getValue(), 
+                'product_id' => isset($products_by_name[$product_name]) ? $products_by_name[$product_name]->id : 0, 
+            );
+            //echo "Produto: ".$worksheet->getCell("A".$i)." | Classe: ".$worksheet->getCell("B".$i)." | Valor Aplicado: ".$worksheet->getCell("E".$i)."<br/>";    
+        }
+
+        //dd($trades);
+        return $this->c->view->render($response, 'trade_import_list.twig', compact('trades', 'products'));     
+    }
+
+    public function import($request, $response){         
+        $params = $request->getParams();  
+
+        $trade_date = $params['trade_date'];
+        $trade_value = $params['trade_value'];
+        $product_id = $params['product_id'];
+        
+        for($i=0; $i<count($trade_date); $i++){
+            $product = $this->c->db->prepare("INSERT INTO trade (product_id, value, date, created_at) VALUES (:product, :value, :date, NOW())");
+            $product->execute(array(
+                ':product' => $product_id[$i],
+                ':value' => str_replace(",", ".",str_replace(".", "", $trade_value[$i])),
+                ':date' => preg_replace('#(\d{2})/(\d{2})/(\d{4})#', '$3-$2-$1 $4', $trade_date[$i])
+            ));
+        }
+        return $response->withRedirect($this->c->get('router')->pathFor('trades.index'));  
+    }
 }
