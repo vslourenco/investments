@@ -11,11 +11,11 @@ $config['renderer'] = [
 ];
 
 $config['db'] = [
-    'database_type' => 'mysql',
-    'database_name' => 'investment',
-    'server' => 'mysql',
-    'username' => 'root',
-    'password' => 'root',
-    'charset' => 'UTF8',
-    'collate' => 'utf8_general_ci'
+    'database_type' => DB_CONNECTION,
+    'database_name' => DB_DATABASE,
+    'server' => DB_HOST,
+    'username' => DB_USERNAME,
+    'password' => DB_PASSWORD,
+    'charset' => DB_CHARSET,
+    'collate' => DB_COLLATE
 ];
