@@ -4,13 +4,27 @@ namespace App\Controllers;
 
 class TradeController extends Controller
 {    
-    public function index($request, $response){    
+    public function index($request, $response){ 
+        $sql_comp="";
+        $uri = $request->getUri()->getPath()."?";
+
+        if($request->getQueryParam("name")!=""){
+            $sql_comp .= " AND product.name LIKE '%{$request->getQueryParam("name")}%'";
+            $uri .= "name=".$request->getQueryParam("name");
+        }
+        if($request->getQueryParam("product_type")!=""){
+            $sql_comp .= " AND product.product_type_id = {$request->getQueryParam("product_type")}";   
+            $uri .= "product_type=".$request->getQueryParam("product_type");         
+        }
+
         $trades = $this->c->db->query("SELECT trade.*, product.name FROM trade 
             INNER JOIN product ON trade.product_id = product.id
-            WHERE trade.deleted_at IS NULL
+            WHERE trade.deleted_at IS NULL  $sql_comp
             ORDER BY trade.date DESC")->fetchAll(\PDO::FETCH_OBJ);
+        
+        $product_types = $this->c->db->query("SELECT * FROM product_type WHERE deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
 
-        return $this->c->view->render($response, 'trade_index.twig', compact('trades'));      
+        return $this->c->view->render($response, 'trade_index.twig', compact('trades', 'product_types', 'uri'));      
     }
 
     public function create($request, $response){  
@@ -21,10 +35,11 @@ class TradeController extends Controller
 
     public function store($request, $response){         
         $params = $request->getParams();    
-        $trade = $this->c->db->prepare("INSERT INTO trade (product_id, value, date, note, created_at) VALUES (:product_id, :value, :date, :note, NOW())");
+        $trade = $this->c->db->prepare("INSERT INTO trade (product_id, quantity, value, date, note, created_at) VALUES (:product_id, :quantity, :value, :date, :note, NOW())");
         $trade->execute(array(
             ':product_id' => $params['product_id'],
             ':value' => $params['value'],
+            ':quantity' => $params['quantity'],
             ':date' => $params['date'],
             ':note' => $params['note']
           ));
@@ -41,16 +56,17 @@ class TradeController extends Controller
 
     public function update($request, $response){        
         $params = $request->getParams();  
-        $trade = $this->c->db->prepare("UPDATE trade SET product_id=:product_id, value=:value, date=:date, note=:note WHERE id=:id");
+        $trade = $this->c->db->prepare("UPDATE trade SET product_id=:product_id, quantity=:quantity, value=:value, date=:date, note=:note WHERE id=:id");
 
         $trade->execute(array(
             ':product_id' => $params['product_id'],
+            ':quantity' => $params['quantity'],
             ':value' => $params['value'],
             ':date' => preg_replace('#(\d{2})/(\d{2})/(\d{4})#', '$3-$2-$1 $4', $params['date']),
             ':note' => $params['note'],
             ':id' => $params['id']
           ));
-
+        //dd($trade->errorInfo());
         return $response->withRedirect($this->c->get('router')->pathFor('trades.index'));              
     }
 
@@ -70,7 +86,7 @@ class TradeController extends Controller
 
     public function importList($request, $response){ 
         
-        $products = $this->c->db->query("SELECT * FROM product WHERE deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
+        $products = $this->c->db->query("SELECT * FROM product WHERE deleted_at IS NULL ORDER BY name")->fetchAll(\PDO::FETCH_OBJ);
 
         $products_by_name = array_column($products, NULL, "name");
 
@@ -93,15 +109,17 @@ class TradeController extends Controller
         //dd($products);
 
         $trades = array();
-        for($i=2; $i<=$last_row; $i++){         
-            $product_name = $worksheet->getCell("B".$i)->getValue();
-            $trades[] = array(
-                'date' => $worksheet->getCell("A".$i)->getValue(), 
-                'product' => $product_name, 
-                'value' => $worksheet->getCell("C".$i)->getValue(), 
-                'product_id' => isset($products_by_name[$product_name]) ? $products_by_name[$product_name]->id : 0, 
-            );
-            //echo "Produto: ".$worksheet->getCell("A".$i)." | Classe: ".$worksheet->getCell("B".$i)." | Valor Aplicado: ".$worksheet->getCell("E".$i)."<br/>";    
+        for($i=2; $i<=$last_row; $i++){    
+            if($worksheet->getCell("D".$i)->getValue() == "Aplicação"){  
+                $product_name = $worksheet->getCell("B".$i)->getValue();
+                $trades[] = array(
+                    'date' => $worksheet->getCell("A".$i)->getValue(), 
+                    'product' => $product_name, 
+                    'value' => $worksheet->getCell("C".$i)->getValue(), 
+                    'product_id' => isset($products_by_name[$product_name]) ? $products_by_name[$product_name]->id : 0, 
+                );
+                //echo "Produto: ".$worksheet->getCell("A".$i)." | Classe: ".$worksheet->getCell("B".$i)." | Valor Aplicado: ".$worksheet->getCell("E".$i)."<br/>";  
+            }  
         }
 
         //dd($trades);
