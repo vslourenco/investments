@@ -5,7 +5,7 @@ namespace App\Controllers;
 class ChartController extends Controller
 {    
     public function allocationType($request, $response){        
-        $products = $this->c->db->query("Select SUM(value) as value, product_type.name, product_type.color From product 
+        $products = $this->c->db->query("Select SUM(value) as value, SUM(tax) as tax, product_type.name, product_type.color From product 
             Left Join product_type on product_type.id = product.product_type_id
             WHERE product.deleted_at IS NULL
             Group By product_type.id
@@ -13,7 +13,7 @@ class ChartController extends Controller
 
         foreach($products as $product){
             $chart_label[] = $product->{"name"};
-            $chart_serie[] = $product->{"value"};
+            $chart_serie[] = $product->{"value"} - $product->{"tax"};
             $chart_color[] = $product->{"color"};
         }
 
@@ -33,7 +33,7 @@ class ChartController extends Controller
 
         if($product_type_id!=""){
 
-            $products_with_subtype = $this->c->db->query("Select SUM(value) as value, product_subtype.name, product_subtype.color From product 
+            $products_with_subtype = $this->c->db->query("Select SUM(value) as value, SUM(tax) as tax, product_subtype.name, product_subtype.color From product 
             Inner Join product_subtype on product_subtype.id = product.product_subtype_id
             WHERE product.deleted_at IS NULL AND product.product_type_id = '$product_type_id'
             Group By product_subtype.id")->fetchAll(\PDO::FETCH_OBJ);
@@ -46,7 +46,7 @@ class ChartController extends Controller
 
         foreach($products as $product){
             $chart_label[] = $product->{"name"};
-            $chart_serie[] = $product->{"value"};
+            $chart_serie[] = $product->{"value"} - $product->{"tax"};
             $chart_color[] = $product->{"color"};
         }
 

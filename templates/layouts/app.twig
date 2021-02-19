@@ -27,7 +27,7 @@
                                     -->
                     <div class="logo">
                         <a class="simple-text logo-normal" href="{{ path_for('home') }}">
-                            Investimentos
+                           {{ constant('APP_NAME') }}
                         </a>
                     </div>
                     <div class="sidebar-wrapper">
@@ -72,6 +72,12 @@
                                             <a class="nav-link" href="{{ path_for('products.import_form') }}">
                                                 <i class="material-icons">cloud_upload</i>
                                                 <p>Importar Produtos</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ path_for('products.index') }}">
+                                                <i class="material-icons">visibility </i>
+                                                <span class="sidebar-normal">Validar Movimentações</span>
                                             </a>
                                         </li>
                                     </ul>

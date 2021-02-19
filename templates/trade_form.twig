@@ -26,13 +26,19 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <div class="form-group bmd-form-group">
+                                <label class="bmd-label-floating">Quantidade</label>
+                                <input class="form-control" name="quantity" value="{{ trade.quantity | format_number({fraction_digit: 2}) }}" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
                             <div class="form-group bmd-form-group">
                                 <label class="bmd-label-floating">Valor</label>
                                 <input class="form-control" name="value" value="{{ trade.value | format_number({fraction_digit: 2}) }}" type="text">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group bmd-form-group">
                                 <label class="bmd-label-static">Data</label>
                                 <input class="form-control" name="date" value="{{ trade.date }}" type="date">

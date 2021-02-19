@@ -2,6 +2,7 @@
 session_start();
 
 require '../vendor/autoload.php';
+require '../env.php';
 require '../src/settings.php';
 
 $app = new \Slim\App(['settings' => $config]);

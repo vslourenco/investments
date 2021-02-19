@@ -49,13 +49,14 @@ class ProductController extends Controller
 
     public function store($request, $response){         
         $params = $request->getParams();    
-        $product = $this->c->db->prepare("INSERT INTO product (name, product_type_id, product_subtype_id, quantity, value, note, created_at) VALUES (:name, :product_type_id, :product_subtype_id, :quantity, :value, :note, NOW())");
+        $product = $this->c->db->prepare("INSERT INTO product (name, product_type_id, product_subtype_id, quantity, value, tax, note, created_at) VALUES (:name, :product_type_id, :product_subtype_id, :quantity, :value, :tax, :note, NOW())");
         $product->execute(array(
             ':name' => $params['name'],
             ':product_type_id' => $params['product_type_id'],
-            ':product_subtype_id' => $params['product_subtype_id'],
+            ':product_subtype_id' => (int)$params['product_subtype_id'],
             ':quantity' => $params['quantity'],
             ':value' => $params['value'],
+            ':tax' => (double)$params['tax'],
             ':note' => $params['note']
           ));
         return $response->withRedirect($this->c->get('router')->pathFor('products.index'));           
@@ -76,17 +77,19 @@ class ProductController extends Controller
 
     public function update($request, $response){        
         $params = $request->getParams();  
-        $product = $this->c->db->prepare("UPDATE product SET name=:name, product_type_id=:product_type_id, product_subtype_id=:product_subtype_id, quantity=:quantity, value=:value, note=:note WHERE id=:id");
+        $product = $this->c->db->prepare("UPDATE product SET name=:name, product_type_id=:product_type_id, product_subtype_id=:product_subtype_id, quantity=:quantity, value=:value, tax=:tax, note=:note WHERE id=:id");
 
         $product->execute(array(
             ':name' => $params['name'],
             ':product_type_id' => $params['product_type_id'],
-            ':product_subtype_id' => $params['product_subtype_id'],
+            ':product_subtype_id' => (int)$params['product_subtype_id'],
             ':quantity' => $params['quantity'],
             ':value' => $params['value'],
+            ':tax' => (double)$params['tax'],
             ':note' => $params['note'],
             ':id' => $params['id']
-          ));
+          ));        
+
         return $response->withRedirect($this->c->get('router')->pathFor('products.index'));              
     }
 
@@ -101,7 +104,7 @@ class ProductController extends Controller
     }
 
     public function verifyConcordance($request, $response){ 
-        $products = $this->c->db->query("Select SUM(value) as value, product_type.name, product_type.target From product 
+        $products = $this->c->db->query("Select SUM(value) as value, SUM(tax) as tax, product_type.name, product_type.target From product 
             Inner Join product_type on product_type.id = product.product_type_id
             WHERE product.deleted_at IS NULL
             Group By product_type.id")->fetchAll(\PDO::FETCH_OBJ);
@@ -112,9 +115,9 @@ class ProductController extends Controller
             $applications[] = array(
                 "product" => $product->name,
                 "target" => $product->target,
-                "value" => round($product->value, 2)
+                "value" => round($product->value - $product->tax, 2)
             );
-            $total_value+=$product->value;
+            $total_value+= ($product->value - $product->tax);
         }
         
         $max_divergence = 0;
@@ -144,8 +147,8 @@ class ProductController extends Controller
 
     public function importList($request, $response){ 
         
-        $product_types = $this->c->db->query("SELECT * FROM product_type WHERE deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
-        $stored_products = $this->c->db->query("SELECT * FROM product WHERE deleted_at IS NULL")->fetchAll(\PDO::FETCH_OBJ);
+        $product_types = $this->c->db->query("SELECT * FROM product_type WHERE deleted_at IS NULL ORDER BY name")->fetchAll(\PDO::FETCH_OBJ);
+        $stored_products = $this->c->db->query("SELECT * FROM product WHERE deleted_at IS NULL ORDER BY name")->fetchAll(\PDO::FETCH_OBJ);
 
         $products_by_name = array_column($stored_products, NULL, "name");
 
@@ -206,15 +209,17 @@ class ProductController extends Controller
                     break;
             }      
             $product_name = $worksheet->getCell("A".$i)->getValue();
+            //Verify if product already exist in products array
             $index = $this->getSubArray($products, $product_name);
             if(!$index){
                 $products[] = array(
                     'name' => $product_name, 
-                    'type' => $type, 
+                    'type' => isset($products_by_name[$product_name]) ? $products_by_name[$product_name]->product_type_id : $type, 
                     'value' => $worksheet->getCell("E".$i)->getValue(), 
                     'product_id' => isset($products_by_name[$product_name]) ? $products_by_name[$product_name]->id : 0, 
                 );
             }else{
+                //if product is in array, increment its value 
                 $product_value = str_replace(".", "", $products[$index]["value"]);
                 $product_value = str_replace(",", ".", $product_value);
 

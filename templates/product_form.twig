@@ -53,6 +53,14 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group bmd-form-group">
+                                <label class="bmd-label-floating">Taxas</label>
+                                <input class="form-control" name="tax" value="{{ product.tax }}" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group bmd-form-group">
                                 <label class="bmd-label-floating">Observação</label>
@@ -112,8 +120,9 @@
     $( document ).ready(function() {
         $("#check_values").click(function(){
             let total_product = document.forms[0].value.value;
+            let total_taxes = document.forms[0].tax.value;
             let total_trade = 0;
-            total_product = parseFloat(total_product);
+            total_product = parseFloat(total_product) - parseFloat(total_taxes);
 
             $(".trade_value").each(function( index ) {
                 let value = $(this).text();

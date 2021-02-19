@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 16-Jul-2019 às 01:07
+-- Generation Time: 19-Fev-2021 às 00:39
 -- Versão do servidor: 5.7.18-log
--- PHP Version: 7.1.8
+-- PHP Version: 7.3.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -32,10 +32,29 @@ CREATE TABLE `product` (
   `id` int(11) NOT NULL,
   `name` varchar(200) NOT NULL,
   `product_type_id` int(11) NOT NULL,
+  `product_subtype_id` int(11) DEFAULT NULL,
+  `quantity` float NOT NULL DEFAULT '1',
   `value` double NOT NULL,
+  `tax` double DEFAULT '0',
+  `note` text,
   `created_at` datetime NOT NULL,
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `product_subtype`
+--
+
+CREATE TABLE `product_subtype` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) COLLATE utf8_bin NOT NULL,
+  `color` varchar(8) COLLATE utf8_bin NOT NULL,
+  `product_type_id` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -46,6 +65,25 @@ CREATE TABLE `product` (
 CREATE TABLE `product_type` (
   `id` int(11) NOT NULL,
   `name` varchar(200) NOT NULL,
+  `color` varchar(10) DEFAULT NULL,
+  `target` float NOT NULL,
+  `created_at` datetime NOT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `trade`
+--
+
+CREATE TABLE `trade` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` float NOT NULL DEFAULT '1',
+  `value` double NOT NULL,
+  `date` date NOT NULL,
+  `note` varchar(200) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `deleted_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -61,9 +99,21 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `product_subtype`
+--
+ALTER TABLE `product_subtype`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `product_type`
 --
 ALTER TABLE `product_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `trade`
+--
+ALTER TABLE `trade`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -77,9 +127,21 @@ ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `product_subtype`
+--
+ALTER TABLE `product_subtype`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `product_type`
 --
 ALTER TABLE `product_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `trade`
+--
+ALTER TABLE `trade`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
